@@ -60,7 +60,7 @@ static int socketBind(const char * ip, int port)
     int listenfd;
     struct sockaddr_in servaddr;
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
-    if(listenfd = -1){
+    if(listenfd == -1){
         perror("socket error !\n");
         exit(1);
     }
@@ -102,16 +102,13 @@ static void handleEvents(int epollfd, struct epoll_event * events, int num, int 
     for(i = 0; i < num; ++i){
         fd = events[i].data.fd;
         //判断不同的事务然后进行处理
-        if((fd == listenfd)&&events[i].events & EPOLLIN)
+        if((fd == listenfd) && (events[i].events & EPOLLIN))
             handleAccept(epollfd, listenfd);
         else if(events[i].events & EPOLLIN){ //读
             doRead(epollfd, fd, buf);
         }else if(events[i].events & EPOLLOUT){ //写
             doWrite(epollfd, fd, buf);
-        }else{
-            //do nothing;
         }
-    }
 }
 
 static void handleAccept(int epollfd, int listenfd)
@@ -120,6 +117,7 @@ static void handleAccept(int epollfd, int listenfd)
     struct sockaddr_in cliaddr;
     socklen_t cliaddrlen;
     clifd = accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddrlen);
+    printf("This : %d", clifd);
     if(clifd == -1){
         perror("accept Error!\n");
     }else{
@@ -137,6 +135,8 @@ static void doRead(int epollfd, int fd, char * buf)
         deleteEvent(epollfd, fd, EPOLLIN);
     }else if(n == 0){
         fprintf(stderr, "client closed!\n");
+        close(fd);
+        deleteEvent(epollfd, fd, EPOLLIN);
     }else{
         printf("read the msg : %s \n", buf);
         //修改描述符的运行状态，从读改成写
@@ -152,7 +152,7 @@ static void doWrite(int epollfd, int fd, char * buf)
         close(fd);
         deleteEvent(epollfd, fd, EPOLLOUT);
     }else{
-        modify_event(epollfd, fd, EPOLLOUT);
+        modify_event(epollfd, fd, EPOLLIN);
     }
     memset(buf, 0, MAXLINE);
 }

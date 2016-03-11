@@ -37,7 +37,7 @@ int main(int argc, char ** argv)
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port = SERV_PORT;
+    servaddr.sin_port = htons(SERV_PORT);
     inet_pton(AF_INET, IPADDRESS, &servaddr.sin_addr);
     connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
     //对链接进行处理
