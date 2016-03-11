@@ -51,7 +51,123 @@ static int createServerProc(const char * ip, int port)
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     inet_pton(AF_INET, ip, &servaddr.sin_);
+    servaddr.sin_port = htons(port);
+    if(bind(fd, (struct sockaddr *)&servaddr, sizeof(servaddr)) == -1){
+        perror("Bindd error!\n");
+        exit(-1);
+    }
+    listen(fd, LISTENQ);
+    return fd;
 }
+
+static int acceptClient(int srvfd)
+{
+    struct sockaddr_in cliaddr;
+    socklen_t cliaddrlen = sizeof(cliaddr);
+    int clifd = -1;
+ACCEPT:
+    clifd = accept(srvfd, (struct sockaddr *)&cliaddr, &cliaddrlen);
+    if(clifd == -1){
+        if(errno == EINTR)
+            goto ACCEPT;
+        else{
+            fprintf(stderr, "acceptClient error: %s \n", strerror(errno));
+            exit(1);
+        }
+    }
+
+    fprintf(stdout, "accept new Client: %s:%d\n", inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);
+    //描述符添加到数组中
+    int i = 0;
+    for(int i = 0; i < SIZE; ++i){
+        if(serverContext->clifds[i] < 0){
+            serverContext->clifds = clifds;
+            serverContext->cliCnt++;
+            break;
+        }
+    }
+
+    if(i == SIZE){
+        fprintf(stderr, "To many clients !\n");
+        exit(1);
+
+    }
+}
+
+
+int handleClientMsg(int fd, char * buf)
+{
+    assert(buf);
+    printf("recv buf is : %s \n", buf);
+    write(fd, buf, strlen(buf) + 1);
+    return 0;
+}
+
+
+static void recvClientMsg(fd_set * readFds)
+{
+    int i = 0, n = 0;
+    int clifd;
+    char buf[MAXLINE] = {0};
+    for(i = 0; i < serverContext->cliCnt; ++i){
+        clifd = serverContext->clifds[i];
+        if(clifd < 0)
+            continue;
+        if(FD_ISSET(clifd, readFds)){
+            n = read(clifd, buf, MAXLINE);
+            if(n <= 0){
+                FD_CLR(clifd, &serverContext->allfds);
+                close(clifd);
+                serverContext->clifds[i] = -1;
+                continue;
+            }
+            handleClientMsg(clifd, buf);
+        }
+    }
+}
+
+static void handleClient(int srvfd)
+{
+    int clifd = -1;
+    int retval = 0;
+    fd_set * readfds = &serverContext->allfds;
+    struct timeval tm;
+    int i = 0;
+    while(1){
+        //注意，每次使用Select之前都应该设置文件描述符以及时间,因为事件发生之后，这些信息又都会被修改了
+        FD_ZERO(readfds);
+        FD_SET(srvfd, readFds);
+        serverContext->maxfd = srvfd;
+
+        tv.tv_sec = 30;
+        tv_tv_usec = 0;
+        for(i = 0; i < serverContext->cliCnt; i++){
+            clifd = serverContext->clifds[i];
+            FD_SET(clifd, readFds);
+            serverContext->maxfd = (clifd > serverContext->maxfd ? clifd : serverContext->maxfd);
+        }
+        retval = select(serverContext->maxfd + 1, readFds,NULL, NULL, NULL, &tv);
+        if(retval == -1){
+            fprintf(stderr, "Select error %s .\n", strerror(errno));
+            exit(0);
+        }
+
+        if(retval == 0){
+            fprintf(stdout, "select is tomeout.\n ");
+            continue;
+        }
+
+        if(FD_ISSET(servfd, readFds)){
+            acceptClient(srvfd);
+        }else{
+            recvClientMsg(readFds);
+        }
+    }
+}
+
+
+
+
 
 int main()
 {
