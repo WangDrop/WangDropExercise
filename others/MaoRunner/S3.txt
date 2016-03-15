@@ -1,0 +1,11 @@
+int a, b, c, d;
+double ee,ff,gg;
+b=a*b*c+1000.123;
+ee=ff=gg=b;
+print(a);
+print(b);
+print(c);
+print(d);
+print(ee);
+print(ff);
+print(gg);
