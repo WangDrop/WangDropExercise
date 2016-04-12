@@ -1,0 +1,1 @@
+/root/huaweiGA/huawei/SDK-gcc/build/CMakeFiles/future_net.dir
