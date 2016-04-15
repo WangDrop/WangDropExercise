@@ -53,5 +53,6 @@ def test_parse_object():
 #def test_parse_subject():
 #    assert_equal(parser.parse_subject([('verb', 'kill'), ('noun', 'tom')], ('subj', 'I')), parser.Sentence(('subj', 'I'), ('verb', 'kill'), ('noun', 'tom')))
 
+#这里应该注意assert_raises的用法
 
 
