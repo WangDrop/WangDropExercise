@@ -38,5 +38,20 @@ def test_match():
     assert_equal(parser.match(None, 'verb'), None)
     assert_equal(parser.match([('verb', 'like')], 'noun'), None)
 
-#def test_skip(word_list, word_type):
+def test_skip(): #该函数会跳过和制定的词语类型相同的所有的tuple
+    assert_equal(parser.skip([('verb', 'kill'), ('noun', 'princess')], 'verb'), None)
+    assert_equal(parser.skip([('noun', 'princess'), ('verb', 'kill')], 'verb'), None)
+
+def test_parse_verb():
+    assert_equal(parser.parse_verb([('stop', 'the'), ('verb', 'kill')]), ('verb', 'kill'))
+
+def test_parse_object():
+    assert_raises(parser.ParseError,parser.parse_object,([('stop', 'the'), ('stop', 'of')], None))
+    assert_equal(parser.parse_object([('stop', 'the'), ('stop', 'of'), ('noun', 'princess')]),('noun', 'princess'))
+    assert_equal(parser.parse_object([('stop', 'the'), ('direction', 'east')]), ('direction', 'east'))
+
+#def test_parse_subject():
+#    assert_equal(parser.parse_subject([('verb', 'kill'), ('noun', 'tom')], ('subj', 'I')), parser.Sentence(('subj', 'I'), ('verb', 'kill'), ('noun', 'tom')))
+
+
 
