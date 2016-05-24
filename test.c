@@ -1,10 +1,9 @@
 /*************************************************************************
-	> File Name: test.cpp
+	> File Name: test.c
 	> Author: 
 	> Mail: 
-	> Created Time: 2016年05月24日 星期二 21时13分17秒
+	> Created Time: 2016年05月24日 星期二 22时35分51秒
  ************************************************************************/
 
-#include<iostream>
-using namespace std;
+#include<stdio.h>
 
