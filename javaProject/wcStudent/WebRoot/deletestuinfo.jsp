@@ -62,7 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      	 	<td><%=student.getKcs() %></td>
      	 	<td><%=student.getXqs() %></td>
      	 	<td><%=student.getBz() %></td>
-     	 	<td><a href = "deleteOneStu.jsp?id=<%=student.getId()%>">删除</a></td>
+     	 	<td><a href = "student/deleteStuServlet?id=<%=student.getId()%>">删除</a></td>
      	 </tr>
      	  <%
      	 		i++;

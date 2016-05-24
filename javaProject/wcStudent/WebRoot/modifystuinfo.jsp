@@ -58,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      	 	<td><%=student.getKcs() %></td>
      	 	<td><%=student.getXqs() %></td>
      	 	<td><%=student.getBz() %></td>
-     	 	<td><a href = "modifyOneStu.jsp?id=<%=student.getId()%>">修改</a></td>
+     	 	<td><a href = "student/modifyOneStudent?id=<%=student.getId()%>">修改</a></td>
      	 </tr>
      	  <%
      	 		i++;
