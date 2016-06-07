@@ -7,17 +7,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.jkxy.model.stuInfo;
 import com.jkxy.service.stuInfoService;
 
-public class modifyOneStudent extends HttpServlet {
+public class modifyOneStuInfoServlet extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public modifyOneStudent() {
+	public modifyOneStuInfoServlet() {
 		super();
 	}
 
@@ -41,7 +40,6 @@ public class modifyOneStudent extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		doPost(request, response);
 	}
 
@@ -57,11 +55,36 @@ public class modifyOneStudent extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int id  = Integer.parseInt(request.getParameter("id"));
-		stuInfo stu = new stuInfoService().queryStuByID(id);
-		HttpSession session = request.getSession();
-		session.setAttribute("stu", stu);
-		response.sendRedirect("../modifyOneStu.jsp");
+		request.setCharacterEncoding("utf-8"); //注意servlet的编码应该设置好
+		int id =  Integer.parseInt(request.getParameter("id"));
+		String niceName = request.getParameter("niceName");
+		String trueName = request.getParameter("trueName");
+		String xb = request.getParameter("xb");
+		String csrq = request.getParameter("csrq");
+		String zy = request.getParameter("zy");
+		System.out.println(zy);
+		String kc [] = request.getParameterValues("kc");
+		String xq [] = request.getParameterValues("xq");
+		String bz = request.getParameter("bz");
+		stuInfo stu = new stuInfo();
+		stu.setId(id);
+		stu.setNiceName(niceName);
+		stu.setTrueName(trueName);
+		stu.setXb(xb);
+		stu.setCsrq(csrq);
+		if(csrq.equals("null")) //处理数据的有效性问题
+			stu.setCsrq(null);
+		stu.setZy(zy);
+		if(kc != null)
+			stu.setKc(kc);
+		if(xq != null)
+			stu.setXq(xq);
+		stu.setBz(bz);
+		if(new stuInfoService().updateStu(stu)){
+			response.sendRedirect("../modify_info_success.jsp");
+		}else{
+			response.sendRedirect("../modify_info_fail.jsp");
+		}
 	}
 
 	/**

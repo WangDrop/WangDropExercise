@@ -29,6 +29,16 @@
     <servlet-name>modifyOneStudent</servlet-name>
     <servlet-class>com.jkxy.servlet.modifyOneStudent</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>modifyOneStuInfoServlet</servlet-name>
+    <servlet-class>com.jkxy.servlet.modifyOneStuInfoServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>deleteStuServlet</servlet-name>
+    <servlet-class>com.jkxy.servlet.deleteStuServlet</servlet-class>
+  </servlet>
+
+
 
 
 
@@ -52,5 +62,13 @@
   <servlet-mapping>
     <servlet-name>modifyOneStudent</servlet-name>
     <url-pattern>/student/modifyOneStudent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>modifyOneStuInfoServlet</servlet-name>
+    <url-pattern>/student/modifyOneStuInfoServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>deleteStuServlet</servlet-name>
+    <url-pattern>/student/deleteStuServlet</url-pattern>
   </servlet-mapping>
 </web-app>

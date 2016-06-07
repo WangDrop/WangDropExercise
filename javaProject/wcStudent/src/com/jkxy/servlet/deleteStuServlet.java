@@ -7,17 +7,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.jkxy.model.stuInfo;
 import com.jkxy.service.stuInfoService;
 
-public class modifyOneStudent extends HttpServlet {
+public class deleteStuServlet extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public modifyOneStudent() {
+	public deleteStuServlet() {
 		super();
 	}
 
@@ -41,7 +39,6 @@ public class modifyOneStudent extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		doPost(request, response);
 	}
 
@@ -57,11 +54,12 @@ public class modifyOneStudent extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int id  = Integer.parseInt(request.getParameter("id"));
-		stuInfo stu = new stuInfoService().queryStuByID(id);
-		HttpSession session = request.getSession();
-		session.setAttribute("stu", stu);
-		response.sendRedirect("../modifyOneStu.jsp");
+		int id = Integer.parseInt(request.getParameter("id"));
+		if(new stuInfoService().deleteStu(id))
+			response.sendRedirect("../delete_info_success.jsp");
+		else {
+			response.sendRedirect("../delete_info_failed.jsp");
+		}
 	}
 
 	/**
