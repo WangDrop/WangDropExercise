@@ -6,7 +6,7 @@
  ************************************************************************/
 
 #include <stdio.h>
-#include "../../helper.h"
+#include "../helper.h"
 int main()
 {
     int sockfd;
