@@ -1,7 +1,3 @@
-//½«×Ö·û´®ÒÔµ¥´ÊÎªµ¥Î»½øÐÐ·´×ª
-#include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 char * revStr(char * str)
 {
@@ -20,7 +16,7 @@ char * revStr(char * str)
 		char * tmpP2 = pos[pos.size() - 1];
 		char * tmpP1 = pos[pos.size() - 2];
 		strncpy(res + currLen, tmpP1 + 1, tmpP2 - tmpP1 - 1);
-		currLen += tmpP2 - tmpP1; //¼ÓÉÏÒ»¸ö¿Õ¸ñ
+		currLen += tmpP2 - tmpP1;
 		res[currLen - 1] = ' ';
 		pos.pop_back();
 	}
@@ -59,11 +55,37 @@ void reverse(char * start, char * end)
 	}
 }
 
-int main()
+string reverseSten(const string & sentence)
 {
-	char * str = "Hello World, This is a test!";
-	char * res = revStr2(str);
-	cout << str << endl;
-	cout << res << endl;
-	system("pause");
+	int len = sentence.len();
+	if(len == 0) return "";
+	string str = sentence;
+	int curr = 0, pos = 0;
+	while(cuur != len - 1){
+		pos = str.find_first_of(curr, ' ');
+		reverse(str.begin() + curr, str.begin() + pos);
+		curr = pos + 1;
+	}
+	reverse(str.begin(), str.end());
+	return str;
+}
+
+//ä¸Šé¢çš„æ˜¯ä½¿ç”¨cè¯­è¨€å®žçŽ°ï¼Œä¸‹é¢çš„æ˜¯ä½¿ç”¨c++çš„åº“å‡½æ•°å®žçŽ°çš„
+string reverseSten(const string & sentence)
+{
+	int len = sentence.length();
+	if (len == 0) return "";
+	string str = sentence;
+	int curr = 0, pos = 0;
+	while (curr < len){
+		pos = str.find_first_of(' ', curr); //æ³¨æ„è¿™é‡Œçš„å‚æ•°çš„ä½ç½®
+		if (pos == string::npos){
+			reverse(str.begin() + curr, str.end());
+			break;
+		}
+		reverse(str.begin() + curr, str.begin() + pos);
+		curr = pos + 1;
+	}
+	reverse(str.begin(), str.end());
+	return str;
 }

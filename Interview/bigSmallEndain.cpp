@@ -1,5 +1,3 @@
-#include <iostream>
-using namespace std;
 union test{
 	char c[4];
 	int num;

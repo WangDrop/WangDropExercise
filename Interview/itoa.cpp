@@ -1,17 +1,22 @@
-#include <iostream>
-#include <string>
-using namespace std;
-string itoa(int num, string & str)
+//自己实现(递归)
+void itoa(int num, string & str)
 {
 	if (num / 10 == 0)
 		str += num % 10 + '0';
 	else{
-		itoa(num/10, str);
+		itoa(num / 10, str);
 		str += num % 10 + '0';
 	}
-	return str;
 }
 
+//借助与snprintf, 注意一下sprintf在打印出来的函数后面是默认的有一个'\0'的
+void itoa(int num, char * buf, int len)
+{
+    assert(buf != NULL);
+    snprintf(buf, len, "%d", num);
+}
+
+//自己实现
 int atoi(string num)
 {
 	int res = 0;
@@ -21,12 +26,12 @@ int atoi(string num)
 	return res;
 }
 
-int main()
+//借助库函数(好一点实际上可以加上参数的检查)
+int atoi(string str)
 {
-	string num;
-	cout << "Test1 : " << itoa(553332323, num) << endl;
-	cout << "Test2 : " << atoi("55665565") << endl;
-	system("pause");
-	return 0;
+	istringstream ss(str);
+	int res;
+	ss >> res;
+	return res;
 }
 

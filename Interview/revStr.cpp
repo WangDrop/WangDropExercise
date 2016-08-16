@@ -1,5 +1,3 @@
-#include <iostream>
-using namespace std;
 void revStr(char * str)
 {
 	int len = strlen(str);
@@ -9,17 +7,15 @@ void revStr(char * str)
 		char tmp = str[i];
 		str[i] = str[len - 1];
 		str[len] = tmp;
-		//std::swap(str[i], str[len]); //Õâ¸ö»òÕßÉÏÃæÄÇÖÖ·½·¨¶¼ÊÇ¿ÉÒÔµÄ
 		i++, len--;
 	}
 }
-int main()
+
+//ä¸‹é¢è¿™ç§æ„Ÿè§‰ç¨å¾®ç®€ä»‹ä¸€ç‚¹ï¼Œå¥½ä¸€ç‚¹
+void reverseStr(string & str)
 {
-	char * str = "Hello World, This is a test!";
-	char arr[29];
-	strcpy(arr, str);
-	revStr(arr);
-	cout << str << endl;
-	cout << arr << endl;
-	system("pause");
+	int end = str.length() - 1;
+	for (int i = 0; i < end; ++i, --end){
+		swap(str[i], str[end]);
+	}
 }
