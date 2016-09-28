@@ -12,5 +12,10 @@ public class trans {
         if(num == 0)
             return "";
         return getStr(num / 10) + num % 10;
+
+        /**
+         *
+         *
+         */
     }
 }
